@@ -39,7 +39,7 @@ export interface Booking {
   createdAt: string;
   student?: User;
   tutor?: User;
-  review?: Review;
+  review?: Review | null;
 }
 
 export interface Review {
