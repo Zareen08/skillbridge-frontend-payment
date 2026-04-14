@@ -38,6 +38,12 @@ export default function Navbar() {
     }
   };
 
+  const handleLogout = async () => {
+    await logout();
+    setDropdownOpen(false);
+    router.push('/auth/login');  
+  };
+
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Find Tutors', href: '/tutors' },
@@ -81,7 +87,6 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="relative" ref={dropdownRef}>
-                
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -92,7 +97,7 @@ export default function Navbar() {
                   <img
                     src={
                       user.avatar ||
-                      `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=6366f1&color=fff`
                     }
                     alt="avatar"
                     className="w-10 h-10 rounded-full border-2 border-indigo-500 object-cover"
@@ -101,7 +106,6 @@ export default function Navbar() {
 
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg py-2 z-50 border">
-                    
                     <div className="px-4 py-3 border-b">
                       <p className="text-sm font-semibold text-gray-900">
                         {user.name}
@@ -122,10 +126,7 @@ export default function Navbar() {
                     </button>
 
                     <button
-                      onClick={() => {
-                        logout();
-                        setDropdownOpen(false);
-                      }}
+                      onClick={handleLogout}  // FIX: Use handleLogout instead of direct logout
                       className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                     >
                       Logout
