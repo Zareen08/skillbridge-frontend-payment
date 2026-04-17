@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-// Loading component for Suspense fallback
+// Loading fallback component
 function PaymentPageSkeleton() {
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -19,7 +19,7 @@ function PaymentPageSkeleton() {
   );
 }
 
-// Main payment component that uses useSearchParams
+// Main content component that uses useSearchParams
 function PaymentContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -121,7 +121,7 @@ function PaymentContent() {
   );
 }
 
-// Main page component with Suspense boundary
+// Main exported component with Suspense boundary
 export default function PaymentPage() {
   return (
     <Suspense fallback={<PaymentPageSkeleton />}>

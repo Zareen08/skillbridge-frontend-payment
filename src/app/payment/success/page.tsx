@@ -1,21 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
-export default function PaymentSuccessPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [bookingId, setBookingId] = useState<string | null>(null);
+// Loading fallback component
+function SuccessPageSkeleton() {
+  return (
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+    </div>
+  );
+}
 
-  useEffect(() => {
-    const id = searchParams.get('bookingId');
-    if (id) {
-      setBookingId(id);
-    }
-  }, [searchParams]);
+// Main content component that uses useSearchParams
+function SuccessContent() {
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('bookingId');
 
   return (
     <div className="max-w-md mx-auto px-4 py-12 text-center">
@@ -51,5 +53,14 @@ export default function PaymentSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Main exported component with Suspense boundary
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense fallback={<SuccessPageSkeleton />}>
+      <SuccessContent />
+    </Suspense>
   );
 }
