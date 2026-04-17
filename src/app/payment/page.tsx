@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -10,7 +10,17 @@ import toast from 'react-hot-toast';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-export default function PaymentPage() {
+// Loading component for Suspense fallback
+function PaymentPageSkeleton() {
+  return (
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+    </div>
+  );
+}
+
+// Main payment component that uses useSearchParams
+function PaymentContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const bookingId = searchParams.get('bookingId');
@@ -108,5 +118,14 @@ export default function PaymentPage() {
         </Elements>
       </div>
     </div>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={<PaymentPageSkeleton />}>
+      <PaymentContent />
+    </Suspense>
   );
 }
