@@ -12,7 +12,8 @@ import {
   CurrencyDollarIcon, 
   CheckCircleIcon,
   XCircleIcon,
-  ClockIcon as ClockIconOutline
+  ClockIcon as ClockIconOutline,
+  CreditCardIcon
 } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/solid';
 
@@ -22,6 +23,7 @@ interface Booking {
   duration: number;
   totalAmount: number;
   status: string;
+  paymentStatus?: string;
   notes?: string;
   createdAt: string;
   isReviewed: boolean;
@@ -72,7 +74,7 @@ export default function BookingDetailsPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/auth/login');
       return;
     }
     
@@ -168,6 +170,7 @@ export default function BookingDetailsPage() {
   const StatusIcon = statusBadge?.icon;
   const isUpcoming = booking.status === 'CONFIRMED' && new Date(booking.date) > new Date();
   const canCancel = isUpcoming;
+  const needsPayment = booking.status === 'CONFIRMED' && booking.paymentStatus !== 'paid';
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -289,6 +292,28 @@ export default function BookingDetailsPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
             <div className="space-y-3">
+              {/* Payment Button - Show for confirmed bookings that need payment */}
+              {needsPayment && (
+                <Link
+                  href={`/payment?bookingId=${booking.id}`}
+                  className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2"
+                >
+                  <CreditCardIcon className="h-5 w-5" />
+                  Pay Now - ${booking.totalAmount}
+                </Link>
+              )}
+              
+              {/* Payment Status - Show if paid */}
+              {booking.paymentStatus === 'paid' && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+                  <p className="text-green-600 text-sm font-medium flex items-center justify-center gap-2">
+                    <CheckCircleIcon className="h-4 w-4" />
+                    Payment Completed
+                  </p>
+                </div>
+              )}
+
+              {/* Cancel Button - Only for confirmed upcoming bookings */}
               {canCancel && (
                 <button
                   onClick={() => setShowCancelModal(true)}
@@ -306,6 +331,16 @@ export default function BookingDetailsPage() {
               </Link>
             </div>
           </div>
+
+          {/* Payment Status Card (if pending) */}
+          {needsPayment && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <h3 className="font-semibold text-yellow-800 mb-2">Payment Required</h3>
+              <p className="text-sm text-yellow-700">
+                Complete your payment to confirm this booking. Your session is reserved but not confirmed until payment is received.
+              </p>
+            </div>
+          )}
 
           {/* Booking Timeline */}
           <div className="bg-white rounded-lg shadow p-6">
@@ -327,6 +362,21 @@ export default function BookingDetailsPage() {
                   </p>
                 </div>
               </div>
+
+              {/* Payment Step */}
+              {booking.paymentStatus === 'paid' && (
+                <div className="flex gap-3">
+                  <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                    <CurrencyDollarIcon className="h-4 w-4 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">Payment Completed</p>
+                    <p className="text-sm text-gray-500">
+                      Payment received: ${booking.totalAmount}
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {booking.status === 'CONFIRMED' && (
                 <div className="flex gap-3">
