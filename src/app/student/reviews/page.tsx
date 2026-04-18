@@ -37,7 +37,7 @@ export default function StudentReviewsPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/auth/login');
       return;
     }
     
@@ -84,7 +84,7 @@ export default function StudentReviewsPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="flex justify-center items-center h-64 bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
@@ -93,33 +93,33 @@ export default function StudentReviewsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">My Reviews</h1>
-        <p className="text-gray-600 mt-1">Reviews you've written for tutors</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Reviews</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">Reviews you've written for tutors</p>
       </div>
 
       {reviews.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
-          <StarIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-500">You haven't written any reviews yet</p>
-          <Link href="/student/bookings" className="mt-4 inline-block text-indigo-600 hover:text-indigo-800">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center">
+          <StarIcon className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+          <p className="text-gray-500 dark:text-gray-400">You haven't written any reviews yet</p>
+          <Link href="/student/bookings" className="mt-4 inline-block text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">
             View your completed sessions →
           </Link>
         </div>
       ) : (
         <div className="space-y-4">
           {reviews.map((review) => (
-            <div key={review.id} className="bg-white rounded-lg shadow p-6">
+            <div key={review.id} className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                      <span className="text-indigo-600 font-semibold">
+                    <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                      <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
                         {review.tutor.name.charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{review.tutor.name}</h3>
-                      <p className="text-sm text-gray-500">{review.tutor.tutorProfile?.title}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">{review.tutor.name}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{review.tutor.tutorProfile?.title}</p>
                     </div>
                   </div>
                   
@@ -128,15 +128,15 @@ export default function StudentReviewsPage() {
                       <StarIcon
                         key={i}
                         className={`h-5 w-5 ${
-                          i < review.rating ? 'text-yellow-400' : 'text-gray-200'
+                          i < review.rating ? 'text-yellow-400' : 'text-gray-200 dark:text-gray-600'
                         }`}
                       />
                     ))}
                   </div>
                   
-                  <p className="text-gray-700 mt-2">{review.comment}</p>
+                  <p className="text-gray-700 dark:text-gray-300 mt-2">{review.comment}</p>
                   
-                  <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
+                  <div className="flex items-center gap-4 mt-3 text-sm text-gray-500 dark:text-gray-400">
                     <span className="flex items-center gap-1">
                       <CalendarIcon className="h-4 w-4" />
                       {new Date(review.booking.date).toLocaleDateString()}
@@ -147,7 +147,7 @@ export default function StudentReviewsPage() {
                 
                 <Link
                   href={`/tutors/${review.tutor.id}`}
-                  className="text-indigo-600 hover:text-indigo-800 text-sm"
+                  className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm"
                 >
                   View Tutor
                 </Link>

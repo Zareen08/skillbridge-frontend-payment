@@ -64,7 +64,7 @@ export default function Home() {
 
       {/* Search Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-10">
-        <div className="bg-white rounded-lg shadow-xl p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6">
           <div className="flex flex-col md:flex-row gap-4">
             <input
               type="text"
@@ -72,12 +72,12 @@ export default function Home() {
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               placeholder="Search by subject, tutor name, or topic..."
-              className="flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             />
             <select
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="">All Subjects</option>
               <option value="Mathematics">Mathematics</option>
@@ -96,12 +96,12 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Features */}
+      {/* Features Section */}
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">Why Choose SkillBridge?</h2>
-            <p className="text-gray-600 mt-4">Learn from the best tutors worldwide</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Why Choose SkillBridge?</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-4">Learn from the best tutors worldwide</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -109,24 +109,24 @@ export default function Home() {
               { icon: UserGroupIcon, title: 'Personalized Learning', desc: 'Get one-on-one attention and customized lesson plans.' },
               { icon: ClockIcon, title: 'Flexible Scheduling', desc: 'Book sessions at times that work best for you.' },
             ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="text-center p-6 hover:shadow-lg transition-shadow duration-300 rounded-lg bg-white">
-                <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Icon className="h-8 w-8 text-indigo-600" />
+              <div key={title} className="text-center p-6 hover:shadow-lg transition-shadow duration-300 rounded-lg bg-white dark:bg-gray-800">
+                <div className="bg-indigo-100 dark:bg-indigo-900/50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Icon className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{title}</h3>
-                <p className="text-gray-600">{desc}</p>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{desc}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Featured Tutors */}
-      <div className="bg-gray-50 py-16">
+      {/* Featured Tutors Section */}
+      <div className="bg-gray-50 dark:bg-gray-900 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">Featured Tutors</h2>
-            <p className="text-gray-600 mt-4">Meet our top-rated instructors</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Featured Tutors</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-4">Meet our top-rated instructors</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {loading ? (
@@ -135,7 +135,7 @@ export default function Home() {
               </div>
             ) : error ? (
               <div className="col-span-3 text-center py-12">
-                <p className="text-red-500 mb-4">{error}</p>
+                <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>
                 <button
                   onClick={fetchFeaturedTutors}
                   className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
@@ -148,7 +148,7 @@ export default function Home() {
                 <TutorCard key={tutor.id} tutor={tutor} />
               ))
             ) : (
-              <div className="col-span-3 text-center py-12 text-gray-500">
+              <div className="col-span-3 text-center py-12 text-gray-500 dark:text-gray-400">
                 No tutors found. Please check back later.
               </div>
             )}

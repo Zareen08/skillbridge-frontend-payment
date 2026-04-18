@@ -25,6 +25,7 @@ export default function CheckoutForm({ bookingId, amount, onSuccess, onCancel }:
     event.preventDefault();
 
     if (!stripe || !elements) {
+      toast.error('Payment system not ready. Please try again.');
       return;
     }
 
@@ -61,21 +62,24 @@ export default function CheckoutForm({ bookingId, amount, onSuccess, onCancel }:
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <PaymentElement />
+      <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+        <PaymentElement />
+      </div>
+      
       <div className="flex gap-4 pt-4">
         <button
           type="button"
           onClick={onCancel}
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+          className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={!stripe || loading}
-          className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+          className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition"
         >
-          {loading ? 'Processing...' : `Pay $${amount}`}
+          {loading ? 'Processing...' : `Pay $${amount.toFixed(2)}`}
         </button>
       </div>
     </form>

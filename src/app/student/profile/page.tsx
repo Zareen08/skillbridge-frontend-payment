@@ -22,7 +22,7 @@ export default function StudentProfilePage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/auth/login');
       return;
     }
     
@@ -36,11 +36,9 @@ export default function StudentProfilePage() {
     }
   }, [user, authLoading]);
 
-  // FIX 1: Change from /users/me to /users/profile
   const fetchProfile = async () => {
     try {
       const response = await api.get('/users/profile');
-      // FIX: Access response.data.data correctly
       const userData = response.data.data;
       setFormData({
         name: userData.name || '',
@@ -68,7 +66,6 @@ export default function StudentProfilePage() {
         interests: formData.interests,
       });
       
-      // Update user in context
       if (user) {
         updateUser({ ...user, name: formData.name });
       }
@@ -101,7 +98,7 @@ export default function StudentProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
@@ -110,11 +107,11 @@ export default function StudentProfilePage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Student Profile</h1>
-        <p className="text-gray-600 mt-2">Update your personal information</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Student Profile</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Update your personal information</p>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-8">
           <div className="flex items-center gap-4">
@@ -134,7 +131,7 @@ export default function StudentProfilePage() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
               <UserIcon className="h-4 w-4" />
               Full Name
             </label>
@@ -142,12 +139,12 @@ export default function StudentProfilePage() {
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
               <PhoneIcon className="h-4 w-4" />
               Phone Number
             </label>
@@ -155,13 +152,13 @@ export default function StudentProfilePage() {
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="+1234567890"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
               <AcademicCapIcon className="h-4 w-4" />
               Education
             </label>
@@ -169,13 +166,13 @@ export default function StudentProfilePage() {
               type="text"
               value={formData.education}
               onChange={(e) => setFormData({ ...formData, education: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="e.g., Computer Science Student at Stanford"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
               <TagIcon className="h-4 w-4" />
               Subjects of Interest
             </label>
@@ -184,7 +181,7 @@ export default function StudentProfilePage() {
                 type="text"
                 value={newInterest}
                 onChange={(e) => setNewInterest(e.target.value)}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 placeholder="e.g., Mathematics, Programming"
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addInterest())}
               />
@@ -200,13 +197,13 @@ export default function StudentProfilePage() {
               {formData.interests.map((interest) => (
                 <span
                   key={interest}
-                  className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm flex items-center gap-2"
+                  className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-400 rounded-full text-sm flex items-center gap-2"
                 >
                   {interest}
                   <button
                     type="button"
                     onClick={() => removeInterest(interest)}
-                    className="text-indigo-500 hover:text-indigo-700"
+                    className="text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
                   >
                     ×
                   </button>
@@ -215,11 +212,11 @@ export default function StudentProfilePage() {
             </div>
           </div>
 
-          <div className="flex justify-end pt-4 border-t">
+          <div className="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
             <button
               type="submit"
               disabled={saving}
-              className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+              className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition"
             >
               {saving ? 'Saving...' : 'Save Changes'}
             </button>

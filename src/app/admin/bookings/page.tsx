@@ -59,7 +59,7 @@ export default function AdminBookingsPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/auth/login');
       return;
     }
     
@@ -110,13 +110,13 @@ export default function AdminBookingsPage() {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'CONFIRMED':
-        return { color: 'bg-yellow-100 text-yellow-800', icon: ClockIcon, label: 'Confirmed' };
+        return { color: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400', icon: ClockIcon, label: 'Confirmed' };
       case 'COMPLETED':
-        return { color: 'bg-green-100 text-green-800', icon: CheckCircleIcon, label: 'Completed' };
+        return { color: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400', icon: CheckCircleIcon, label: 'Completed' };
       case 'CANCELLED':
-        return { color: 'bg-red-100 text-red-800', icon: XCircleIcon, label: 'Cancelled' };
+        return { color: 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400', icon: XCircleIcon, label: 'Cancelled' };
       default:
-        return { color: 'bg-gray-100 text-gray-800', icon: ClockIcon, label: status };
+        return { color: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300', icon: ClockIcon, label: status };
     }
   };
 
@@ -140,41 +140,41 @@ export default function AdminBookingsPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Booking Management</h1>
-        <p className="text-gray-600 mt-2">View and manage all platform bookings</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Booking Management</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">View and manage all platform bookings</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-        <div className="bg-white rounded-lg shadow p-4 text-center">
-          <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-          <p className="text-sm text-gray-600">Total Bookings</p>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Total Bookings</p>
         </div>
-        <div className="bg-yellow-50 rounded-lg shadow p-4 text-center">
-          <p className="text-2xl font-bold text-yellow-600">{stats.confirmed}</p>
-          <p className="text-sm text-yellow-600">Confirmed</p>
+        <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.confirmed}</p>
+          <p className="text-sm text-yellow-600 dark:text-yellow-400">Confirmed</p>
         </div>
-        <div className="bg-green-50 rounded-lg shadow p-4 text-center">
-          <p className="text-2xl font-bold text-green-600">{stats.completed}</p>
-          <p className="text-sm text-green-600">Completed</p>
+        <div className="bg-green-50 dark:bg-green-900/30 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.completed}</p>
+          <p className="text-sm text-green-600 dark:text-green-400">Completed</p>
         </div>
-        <div className="bg-red-50 rounded-lg shadow p-4 text-center">
-          <p className="text-2xl font-bold text-red-600">{stats.cancelled}</p>
-          <p className="text-sm text-red-600">Cancelled</p>
+        <div className="bg-red-50 dark:bg-red-900/30 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-red-600 dark:text-red-400">{stats.cancelled}</p>
+          <p className="text-sm text-red-600 dark:text-red-400">Cancelled</p>
         </div>
-        <div className="bg-indigo-50 rounded-lg shadow p-4 text-center">
-          <p className="text-2xl font-bold text-indigo-600">${stats.totalRevenue}</p>
-          <p className="text-sm text-indigo-600">Total Revenue</p>
+        <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">${stats.totalRevenue}</p>
+          <p className="text-sm text-indigo-600 dark:text-indigo-400">Total Revenue</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow p-4 mb-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-6">
         <div className="flex flex-wrap gap-4">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           >
             <option value="ALL">All Status</option>
             <option value="CONFIRMED">Confirmed</option>
@@ -187,7 +187,7 @@ export default function AdminBookingsPage() {
             placeholder="Search by student or tutor name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
           />
           
           <button
@@ -200,53 +200,53 @@ export default function AdminBookingsPage() {
       </div>
 
       {/* Bookings Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-900">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking Info</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tutor</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Booking Info</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Student</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tutor</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               {bookings.map((booking) => {
                 const statusBadge = getStatusBadge(booking.status);
                 const StatusIcon = statusBadge.icon;
                 
                 return (
-                  <tr key={booking.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => {
+                  <tr key={booking.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" onClick={() => {
                     setSelectedBooking(booking);
                     setShowModal(true);
                   }}>
                     <td className="px-6 py-4">
                       <div>
-                        <div className="font-medium text-gray-900">
+                        <div className="font-medium text-gray-900 dark:text-white">
                           {new Date(booking.date).toLocaleDateString()}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
                           {booking.duration} minutes
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div>
-                        <div className="font-medium text-gray-900">{booking.student.name}</div>
-                        <div className="text-sm text-gray-500">{booking.student.email}</div>
+                        <div className="font-medium text-gray-900 dark:text-white">{booking.student.name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{booking.student.email}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div>
-                        <div className="font-medium text-gray-900">{booking.tutor.name}</div>
-                        <div className="text-sm text-gray-500">{booking.tutor.tutorProfile?.title}</div>
+                        <div className="font-medium text-gray-900 dark:text-white">{booking.tutor.name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{booking.tutor.tutorProfile?.title}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-semibold text-green-600">${booking.totalAmount}</div>
+                      <div className="font-semibold text-green-600 dark:text-green-400">${booking.totalAmount}</div>
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full ${statusBadge.color}`}>
@@ -262,13 +262,13 @@ export default function AdminBookingsPage() {
                             setSelectedBooking(booking);
                             setShowModal(true);
                           }}
-                          className="text-red-600 hover:text-red-800 text-sm font-medium"
+                          className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm font-medium"
                         >
                           Cancel
                         </button>
                       )}
                     </td>
-                  </tr>
+                   </tr>
                 );
               })}
             </tbody>
@@ -277,8 +277,8 @@ export default function AdminBookingsPage() {
         
         {bookings.length === 0 && (
           <div className="text-center py-12">
-            <CalendarIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500">No bookings found</p>
+            <CalendarIcon className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+            <p className="text-gray-500 dark:text-gray-400">No bookings found</p>
           </div>
         )}
       </div>
@@ -286,16 +286,16 @@ export default function AdminBookingsPage() {
       {/* Booking Details Modal */}
       {showModal && selectedBooking && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-900">Booking Details</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Booking Details</h2>
                 <button
                   onClick={() => {
                     setShowModal(false);
                     setCancelReason('');
                   }}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 >
                   ×
                 </button>
@@ -305,68 +305,68 @@ export default function AdminBookingsPage() {
             <div className="p-6 space-y-6">
               {/* Booking Info */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-600">Date & Time</p>
-                  <p className="font-semibold">{new Date(selectedBooking.date).toLocaleString()}</p>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Date & Time</p>
+                  <p className="font-semibold text-gray-900 dark:text-white">{new Date(selectedBooking.date).toLocaleString()}</p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-600">Duration</p>
-                  <p className="font-semibold">{selectedBooking.duration} minutes</p>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Duration</p>
+                  <p className="font-semibold text-gray-900 dark:text-white">{selectedBooking.duration} minutes</p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-600">Total Amount</p>
-                  <p className="font-semibold text-green-600">${selectedBooking.totalAmount}</p>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Amount</p>
+                  <p className="font-semibold text-green-600 dark:text-green-400">${selectedBooking.totalAmount}</p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-600">Status</p>
-                  <p className="font-semibold">{selectedBooking.status}</p>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Status</p>
+                  <p className="font-semibold text-gray-900 dark:text-white">{selectedBooking.status}</p>
                 </div>
               </div>
 
               {/* Student & Tutor Info */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 rounded-lg p-4">
-                  <h4 className="font-semibold mb-2">Student Information</h4>
-                  <p className="font-medium">{selectedBooking.student.name}</p>
-                  <p className="text-sm text-gray-600">{selectedBooking.student.email}</p>
+                <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Student Information</h4>
+                  <p className="font-medium text-gray-900 dark:text-white">{selectedBooking.student.name}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{selectedBooking.student.email}</p>
                 </div>
-                <div className="bg-green-50 rounded-lg p-4">
-                  <h4 className="font-semibold mb-2">Tutor Information</h4>
-                  <p className="font-medium">{selectedBooking.tutor.name}</p>
-                  <p className="text-sm text-gray-600">{selectedBooking.tutor.email}</p>
-                  <p className="text-sm text-gray-600">{selectedBooking.tutor.tutorProfile?.title}</p>
+                <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Tutor Information</h4>
+                  <p className="font-medium text-gray-900 dark:text-white">{selectedBooking.tutor.name}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{selectedBooking.tutor.email}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{selectedBooking.tutor.tutorProfile?.title}</p>
                 </div>
               </div>
 
               {/* Notes */}
               {selectedBooking.notes && (
-                <div className="bg-yellow-50 rounded-lg p-4">
-                  <h4 className="font-semibold mb-2">Booking Notes</h4>
-                  <p className="text-sm">{selectedBooking.notes}</p>
+                <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Booking Notes</h4>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">{selectedBooking.notes}</p>
                 </div>
               )}
 
               {/* Review */}
               {selectedBooking.review && (
-                <div className="bg-purple-50 rounded-lg p-4">
-                  <h4 className="font-semibold mb-2">Student Review</h4>
+                <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Student Review</h4>
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-yellow-500">⭐</span>
-                    <span className="font-semibold">{selectedBooking.review.rating}/5</span>
+                    <span className="font-semibold text-gray-900 dark:text-white">{selectedBooking.review.rating}/5</span>
                   </div>
-                  <p className="text-sm">{selectedBooking.review.comment}</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">{selectedBooking.review.comment}</p>
                 </div>
               )}
 
               {/* Cancel Form */}
               {selectedBooking.status === 'CONFIRMED' && (
-                <div className="border-t pt-4">
-                  <h4 className="font-semibold mb-2">Cancel Booking</h4>
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Cancel Booking</h4>
                   <textarea
                     value={cancelReason}
                     onChange={(e) => setCancelReason(e.target.value)}
                     placeholder="Reason for cancellation..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 mb-4"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white mb-4"
                     rows={3}
                   />
                   <button
@@ -383,7 +383,7 @@ export default function AdminBookingsPage() {
                   setShowModal(false);
                   setCancelReason('');
                 }}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
               >
                 Close
               </button>

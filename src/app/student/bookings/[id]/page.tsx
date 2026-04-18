@@ -122,25 +122,25 @@ export default function BookingDetailsPage() {
     switch(booking.status) {
       case 'CONFIRMED':
         return {
-          color: 'bg-yellow-100 text-yellow-800',
+          color: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400',
           icon: ClockIconOutline,
           text: 'Confirmed'
         };
       case 'COMPLETED':
         return {
-          color: 'bg-green-100 text-green-800',
+          color: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400',
           icon: CheckCircleIcon,
           text: 'Completed'
         };
       case 'CANCELLED':
         return {
-          color: 'bg-red-100 text-red-800',
+          color: 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400',
           icon: XCircleIcon,
           text: 'Cancelled'
         };
       default:
         return {
-          color: 'bg-gray-100 text-gray-800',
+          color: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300',
           icon: ClockIconOutline,
           text: booking.status
         };
@@ -149,7 +149,7 @@ export default function BookingDetailsPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
@@ -158,8 +158,8 @@ export default function BookingDetailsPage() {
   if (!booking) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8 text-center">
-        <h1 className="text-2xl font-bold text-gray-900">Booking not found</h1>
-        <Link href="/student/bookings" className="mt-4 inline-block text-indigo-600">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Booking not found</h1>
+        <Link href="/student/bookings" className="mt-4 inline-block text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">
           ← Back to Bookings
         </Link>
       </div>
@@ -176,13 +176,13 @@ export default function BookingDetailsPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <Link href="/student/bookings" className="text-indigo-600 hover:text-indigo-800 flex items-center gap-1 mb-4">
+        <Link href="/student/bookings" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1 mb-4">
           ← Back to Bookings
         </Link>
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Booking Details</h1>
-            <p className="text-gray-600 mt-1">Booking ID: {booking.id.slice(0, 8)}...</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Booking Details</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">Booking ID: {booking.id.slice(0, 8)}...</p>
           </div>
           <div className={`flex items-center gap-2 px-3 py-1 rounded-full ${statusBadge?.color}`}>
             {StatusIcon && <StatusIcon className="h-4 w-4" />}
@@ -195,10 +195,10 @@ export default function BookingDetailsPage() {
         {/* Main Content - Left Side */}
         <div className="lg:col-span-2 space-y-6">
           {/* Session Info */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Session Information</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Session Information</h2>
             <div className="space-y-3">
-              <div className="flex items-center gap-3 text-gray-600">
+              <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
                 <CalendarIcon className="h-5 w-5" />
                 <span>{new Date(booking.date).toLocaleDateString('en-US', { 
                   weekday: 'long', 
@@ -207,45 +207,45 @@ export default function BookingDetailsPage() {
                   day: 'numeric' 
                 })}</span>
               </div>
-              <div className="flex items-center gap-3 text-gray-600">
+              <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
                 <ClockIcon className="h-5 w-5" />
                 <span>{new Date(booking.date).toLocaleTimeString()} ({booking.duration} minutes)</span>
               </div>
-              <div className="flex items-center gap-3 text-gray-600">
+              <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
                 <CurrencyDollarIcon className="h-5 w-5" />
-                <span className="font-semibold text-green-600">${booking.totalAmount}</span>
+                <span className="font-semibold text-green-600 dark:text-green-400">${booking.totalAmount}</span>
               </div>
               {booking.notes && (
-                <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-500 mb-1">Additional Notes:</p>
-                  <p className="text-gray-700">{booking.notes}</p>
+                <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Additional Notes:</p>
+                  <p className="text-gray-700 dark:text-gray-300">{booking.notes}</p>
                 </div>
               )}
             </div>
           </div>
 
           {/* Tutor Info */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Tutor Information</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Tutor Information</h2>
             <div className="flex items-start gap-4">
               <div className="h-16 w-16 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xl font-bold">
                 {booking.tutor.name.charAt(0).toUpperCase()}
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-lg text-gray-900">{booking.tutor.name}</h3>
-                <p className="text-gray-600">{booking.tutor.tutorProfile?.title}</p>
+                <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{booking.tutor.name}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{booking.tutor.tutorProfile?.title}</p>
                 <div className="flex items-center gap-2 mt-2">
                   <div className="flex items-center gap-1">
                     <StarIcon className="h-4 w-4 text-yellow-400" />
-                    <span className="text-sm font-medium">{booking.tutor.tutorProfile?.rating?.toFixed(1) || 'New'}</span>
-                    <span className="text-xs text-gray-500">({booking.tutor.tutorProfile?.totalReviews || 0} reviews)</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">{booking.tutor.tutorProfile?.rating?.toFixed(1) || 'New'}</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">({booking.tutor.tutorProfile?.totalReviews || 0} reviews)</span>
                   </div>
-                  <span className="text-gray-300">|</span>
-                  <span className="text-sm text-gray-600">{booking.tutor.tutorProfile?.experience}+ years exp</span>
+                  <span className="text-gray-300 dark:text-gray-600">|</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">{booking.tutor.tutorProfile?.experience}+ years exp</span>
                 </div>
                 <Link
                   href={`/tutors/${booking.tutor.id}`}
-                  className="mt-3 inline-block text-indigo-600 hover:text-indigo-800 text-sm"
+                  className="mt-3 inline-block text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm"
                 >
                   View Tutor Profile →
                 </Link>
@@ -255,26 +255,26 @@ export default function BookingDetailsPage() {
 
           {/* Review Section */}
           {booking.status === 'COMPLETED' && (
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Your Review</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Your Review</h2>
               {booking.review ? (
                 <div>
                   <div className="flex items-center gap-1 mb-2">
                     {[...Array(5)].map((_, i) => (
                       <StarIcon
                         key={i}
-                        className={`h-5 w-5 ${i < booking.review!.rating ? 'text-yellow-400' : 'text-gray-200'}`}
+                        className={`h-5 w-5 ${i < booking.review!.rating ? 'text-yellow-400' : 'text-gray-200 dark:text-gray-600'}`}
                       />
                     ))}
                   </div>
-                  <p className="text-gray-700">{booking.review.comment}</p>
-                  <p className="text-xs text-gray-400 mt-2">
+                  <p className="text-gray-700 dark:text-gray-300">{booking.review.comment}</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
                     Reviewed on {new Date(booking.review.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               ) : (
                 <div className="text-center py-4">
-                  <p className="text-gray-500 mb-3">You haven't reviewed this session yet</p>
+                  <p className="text-gray-500 dark:text-gray-400 mb-3">You haven't reviewed this session yet</p>
                   <Link
                     href={`/student/review/${booking.id}`}
                     className="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
@@ -289,8 +289,8 @@ export default function BookingDetailsPage() {
 
         {/* Sidebar - Right Side */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Actions</h2>
             <div className="space-y-3">
               {/* Payment Button - Show for confirmed bookings that need payment */}
               {needsPayment && (
@@ -305,8 +305,8 @@ export default function BookingDetailsPage() {
               
               {/* Payment Status - Show if paid */}
               {booking.paymentStatus === 'paid' && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
-                  <p className="text-green-600 text-sm font-medium flex items-center justify-center gap-2">
+                <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-3 text-center">
+                  <p className="text-green-600 dark:text-green-400 text-sm font-medium flex items-center justify-center gap-2">
                     <CheckCircleIcon className="h-4 w-4" />
                     Payment Completed
                   </p>
@@ -325,7 +325,7 @@ export default function BookingDetailsPage() {
         
               <Link
                 href="/tutors"
-                className="block w-full text-center border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 transition"
+                className="block w-full text-center border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
               >
                 Find Another Tutor
               </Link>
@@ -334,30 +334,30 @@ export default function BookingDetailsPage() {
 
           {/* Payment Status Card (if pending) */}
           {needsPayment && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <h3 className="font-semibold text-yellow-800 mb-2">Payment Required</h3>
-              <p className="text-sm text-yellow-700">
+            <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+              <h3 className="font-semibold text-yellow-800 dark:text-yellow-400 mb-2">Payment Required</h3>
+              <p className="text-sm text-yellow-700 dark:text-yellow-300">
                 Complete your payment to confirm this booking. Your session is reserved but not confirmed until payment is received.
               </p>
             </div>
           )}
 
           {/* Booking Timeline */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Booking Timeline</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Booking Timeline</h2>
             <div className="space-y-4">
               <div className="flex gap-3">
                 <div className="relative">
-                  <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                    <CheckCircleIcon className="h-4 w-4 text-green-600" />
+                  <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <CheckCircleIcon className="h-4 w-4 text-green-600 dark:text-green-400" />
                   </div>
                   {booking.status !== 'CANCELLED' && (
-                    <div className="absolute top-8 left-4 h-full w-px bg-gray-200"></div>
+                    <div className="absolute top-8 left-4 h-full w-px bg-gray-200 dark:bg-gray-700"></div>
                   )}
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Booking Created</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="font-medium text-gray-900 dark:text-white">Booking Created</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     {new Date(booking.createdAt).toLocaleString()}
                   </p>
                 </div>
@@ -366,12 +366,12 @@ export default function BookingDetailsPage() {
               {/* Payment Step */}
               {booking.paymentStatus === 'paid' && (
                 <div className="flex gap-3">
-                  <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                    <CurrencyDollarIcon className="h-4 w-4 text-green-600" />
+                  <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <CurrencyDollarIcon className="h-4 w-4 text-green-600 dark:text-green-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Payment Completed</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="font-medium text-gray-900 dark:text-white">Payment Completed</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       Payment received: ${booking.totalAmount}
                     </p>
                   </div>
@@ -380,12 +380,12 @@ export default function BookingDetailsPage() {
 
               {booking.status === 'CONFIRMED' && (
                 <div className="flex gap-3">
-                  <div className="h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center">
-                    <ClockIconOutline className="h-4 w-4 text-yellow-600" />
+                  <div className="h-8 w-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+                    <ClockIconOutline className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Session Scheduled</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="font-medium text-gray-900 dark:text-white">Session Scheduled</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {new Date(booking.date).toLocaleString()}
                     </p>
                   </div>
@@ -394,12 +394,12 @@ export default function BookingDetailsPage() {
 
               {booking.status === 'COMPLETED' && (
                 <div className="flex gap-3">
-                  <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                    <CheckCircleIcon className="h-4 w-4 text-green-600" />
+                  <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <CheckCircleIcon className="h-4 w-4 text-green-600 dark:text-green-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Session Completed</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="font-medium text-gray-900 dark:text-white">Session Completed</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       Completed on {new Date(booking.date).toLocaleDateString()}
                     </p>
                   </div>
@@ -408,12 +408,12 @@ export default function BookingDetailsPage() {
 
               {booking.status === 'CANCELLED' && (
                 <div className="flex gap-3">
-                  <div className="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center">
-                    <XCircleIcon className="h-4 w-4 text-red-600" />
+                  <div className="h-8 w-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                    <XCircleIcon className="h-4 w-4 text-red-600 dark:text-red-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Booking Cancelled</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="font-medium text-gray-900 dark:text-white">Booking Cancelled</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       Cancelled by {user?.role === 'STUDENT' ? 'You' : 'Tutor'}
                     </p>
                   </div>
@@ -427,23 +427,23 @@ export default function BookingDetailsPage() {
       {/* Cancel Modal */}
       {showCancelModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-bold text-gray-900">Cancel Booking</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Cancel Booking</h2>
             </div>
             <div className="p-6">
-              <p className="text-gray-600 mb-4">
-                Are you sure you want to cancel your session with <strong>{booking.tutor.name}</strong>?
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Are you sure you want to cancel your session with <strong className="text-gray-900 dark:text-white">{booking.tutor.name}</strong>?
               </p>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Reason for cancellation *
                 </label>
                 <textarea
                   value={cancelReason}
                   onChange={(e) => setCancelReason(e.target.value)}
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   placeholder="Please tell us why you're cancelling..."
                   required
                 />
@@ -454,7 +454,7 @@ export default function BookingDetailsPage() {
                     setShowCancelModal(false);
                     setCancelReason('');
                   }}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                 >
                   Keep Booking
                 </button>

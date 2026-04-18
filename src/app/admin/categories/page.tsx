@@ -39,7 +39,7 @@ export default function AdminCategoriesPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/auth/login');
       return;
     }
     
@@ -137,8 +137,8 @@ export default function AdminCategoriesPage() {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Category Management</h1>
-          <p className="text-gray-600 mt-2">Manage tutoring categories</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Category Management</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Manage tutoring categories</p>
         </div>
         <button
           onClick={() => {
@@ -155,15 +155,15 @@ export default function AdminCategoriesPage() {
       {/* Categories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((category) => (
-          <div key={category.id} className="bg-white rounded-lg shadow hover:shadow-lg transition p-6">
+          <div key={category.id} className="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-6">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 bg-indigo-100 rounded-full flex items-center justify-center text-2xl">
+                <div className="h-12 w-12 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center text-2xl">
                   {category.icon || '📚'}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg text-gray-900">{category.name}</h3>
-                  <p className="text-sm text-gray-500">
+                  <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{category.name}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     {category.tutorCount || 0} tutors
                   </p>
                 </div>
@@ -171,38 +171,38 @@ export default function AdminCategoriesPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => editCategory(category)}
-                  className="text-gray-400 hover:text-indigo-600"
+                  className="text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
                 >
                   <PencilIcon className="h-5 w-5" />
                 </button>
                 <button
                   onClick={() => deleteCategory(category)}
-                  className="text-gray-400 hover:text-red-600"
+                  className="text-gray-400 hover:text-red-600 dark:hover:text-red-400"
                 >
                   <TrashIcon className="h-5 w-5" />
                 </button>
               </div>
             </div>
             {category.description && (
-              <p className="text-gray-600 text-sm line-clamp-2">{category.description}</p>
+              <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">{category.description}</p>
             )}
           </div>
         ))}
       </div>
 
       {categories.length === 0 && (
-        <div className="text-center py-12 bg-white rounded-lg shadow">
-          <BookmarkIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-500">No categories yet. Create your first category!</p>
+        <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow">
+          <BookmarkIcon className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+          <p className="text-gray-500 dark:text-gray-400">No categories yet. Create your first category!</p>
         </div>
       )}
 
       {/* Add/Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-            <div className="p-6 border-b flex justify-between items-center">
-              <h2 className="text-xl font-bold text-gray-900">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 {editingCategory ? 'Edit Category' : 'Add New Category'}
               </h2>
               <button
@@ -210,7 +210,7 @@ export default function AdminCategoriesPage() {
                   setShowModal(false);
                   resetForm();
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 <XMarkIcon className="h-6 w-6" />
               </button>
@@ -218,7 +218,7 @@ export default function AdminCategoriesPage() {
             
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Category Name *
                 </label>
                 <input
@@ -226,33 +226,33 @@ export default function AdminCategoriesPage() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="e.g., Mathematics"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Description
                 </label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Brief description of this category"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Icon (Emoji)
                 </label>
                 <input
                   type="text"
                   value={formData.icon}
                   onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="e.g., 📐"
                   maxLength={2}
                 />
@@ -265,7 +265,7 @@ export default function AdminCategoriesPage() {
                     setShowModal(false);
                     resetForm();
                   }}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                 >
                   Cancel
                 </button>

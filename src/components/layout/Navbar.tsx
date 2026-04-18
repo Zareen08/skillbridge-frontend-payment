@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
 import ThemeToggle from '../common/ThemeToggle';
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
@@ -42,32 +43,33 @@ export default function Navbar() {
   const handleLogout = async () => {
     await logout();
     setDropdownOpen(false);
-    router.push('/auth/login');  
+    router.push('/auth/login');
   };
 
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Find Tutors', href: '/tutors' },
-    // { name: 'About', href: '/about' },
+    { name: 'About', href: '/about' },
   ];
 
   if (!mounted) {
     return (
-      <nav className="bg-white shadow-lg sticky top-0 z-50">
+      <nav className="bg-white dark:bg-gray-900 shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center">
-          <span className="text-2xl font-bold text-indigo-600">SkillBridge</span>
+          <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">SkillBridge</span>
         </div>
       </nav>
     );
   }
 
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
+    <nav className="bg-white dark:bg-gray-900 shadow-lg sticky top-0 z-50 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
+          {/* Logo */}
           <div className="flex">
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold text-indigo-600">SkillBridge</span>
+              <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">SkillBridge</span>
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               {navigation.map((item) => (
@@ -76,8 +78,8 @@ export default function Navbar() {
                   href={item.href}
                   className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
                     pathname === item.href
-                      ? 'border-indigo-500 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                      ? 'border-indigo-500 text-gray-900 dark:text-white'
+                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-200'
                   }`}
                 >
                   {item.name}
@@ -86,8 +88,10 @@ export default function Navbar() {
             </div>
           </div>
 
+          {/* Right side */}
           <div className="flex items-center space-x-4">
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
+            
             {user ? (
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -108,12 +112,12 @@ export default function Navbar() {
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg py-2 z-50 border">
-                    <div className="px-4 py-3 border-b">
-                      <p className="text-sm font-semibold text-gray-900">
+                  <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-lg py-2 z-50 border border-gray-200 dark:border-gray-700">
+                    <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white">
                         {user.name}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         {user.email}
                       </p>
                     </div>
@@ -123,14 +127,14 @@ export default function Navbar() {
                         router.push(getDashboardLink());
                         setDropdownOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                     >
                       Dashboard
                     </button>
 
                     <button
-                      onClick={handleLogout}  // FIX: Use handleLogout instead of direct logout
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                     >
                       Logout
                     </button>
@@ -141,7 +145,7 @@ export default function Navbar() {
               <div className="flex space-x-4">
                 <Link
                   href="/auth/login"
-                  className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition"
                 >
                   Login
                 </Link>

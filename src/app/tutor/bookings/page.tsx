@@ -37,7 +37,7 @@ export default function TutorBookingsPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/auth/login');
       return;
     }
     
@@ -83,19 +83,19 @@ export default function TutorBookingsPage() {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'CONFIRMED':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400';
       case 'COMPLETED':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400';
       case 'CANCELLED':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300';
     }
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
@@ -113,34 +113,34 @@ export default function TutorBookingsPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Bookings</h1>
-          <p className="text-gray-600 mt-1">View and manage all your tutoring sessions</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Bookings</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">View and manage all your tutoring sessions</p>
         </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-lg shadow p-4 text-center">
-          <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-          <p className="text-sm text-gray-600">Total Bookings</p>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Total Bookings</p>
         </div>
-        <div className="bg-yellow-50 rounded-lg shadow p-4 text-center">
-          <p className="text-2xl font-bold text-yellow-600">{stats.confirmed}</p>
-          <p className="text-sm text-yellow-600">Confirmed</p>
+        <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.confirmed}</p>
+          <p className="text-sm text-yellow-600 dark:text-yellow-400">Confirmed</p>
         </div>
-        <div className="bg-green-50 rounded-lg shadow p-4 text-center">
-          <p className="text-2xl font-bold text-green-600">{stats.completed}</p>
-          <p className="text-sm text-green-600">Completed</p>
+        <div className="bg-green-50 dark:bg-green-900/30 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.completed}</p>
+          <p className="text-sm text-green-600 dark:text-green-400">Completed</p>
         </div>
-        <div className="bg-red-50 rounded-lg shadow p-4 text-center">
-          <p className="text-2xl font-bold text-red-600">{stats.cancelled}</p>
-          <p className="text-sm text-red-600">Cancelled</p>
+        <div className="bg-red-50 dark:bg-red-900/30 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-red-600 dark:text-red-400">{stats.cancelled}</p>
+          <p className="text-sm text-red-600 dark:text-red-400">Cancelled</p>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="bg-white rounded-lg shadow mb-6">
-        <div className="border-b">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6">
+        <div className="border-b border-gray-200 dark:border-gray-700">
           <nav className="flex space-x-8 px-6">
             {['ALL', 'CONFIRMED', 'COMPLETED', 'CANCELLED'].map((tab) => (
               <button
@@ -148,8 +148,8 @@ export default function TutorBookingsPage() {
                 onClick={() => setFilter(tab)}
                 className={`py-4 px-1 border-b-2 font-medium text-sm transition ${
                   filter === tab
-                    ? 'border-indigo-500 text-indigo-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
               >
                 {tab === 'ALL' ? 'All' : tab.charAt(0) + tab.slice(1).toLowerCase()}
@@ -162,43 +162,43 @@ export default function TutorBookingsPage() {
       {/* Bookings List */}
       <div className="space-y-4">
         {filteredBookings.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-12 text-center">
-            <p className="text-gray-500">No bookings found</p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center">
+            <p className="text-gray-500 dark:text-gray-400">No bookings found</p>
           </div>
         ) : (
           filteredBookings.map((booking) => (
-            <div key={booking.id} className="bg-white rounded-lg shadow p-6 hover:shadow-md transition">
+            <div key={booking.id} className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 hover:shadow-md transition">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                      <span className="text-indigo-600 font-semibold">
+                    <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                      <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
                         {booking.student.name.charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">{booking.student.name}</p>
-                      <p className="text-sm text-gray-500">{booking.student.email}</p>
+                      <p className="font-semibold text-gray-900 dark:text-white">{booking.student.name}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{booking.student.email}</p>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
                     <div>
-                      <p className="text-sm text-gray-500">Date & Time</p>
-                      <p className="font-medium">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Date & Time</p>
+                      <p className="font-medium text-gray-900 dark:text-white">
                         {new Date(booking.date).toLocaleDateString()} at {new Date(booking.date).toLocaleTimeString()}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Duration</p>
-                      <p className="font-medium">{booking.duration} minutes</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Duration</p>
+                      <p className="font-medium text-gray-900 dark:text-white">{booking.duration} minutes</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Amount</p>
-                      <p className="font-medium text-green-600">${booking.totalAmount}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Amount</p>
+                      <p className="font-medium text-green-600 dark:text-green-400">${booking.totalAmount}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Status</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Status</p>
                       <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${getStatusBadge(booking.status)}`}>
                         {booking.status}
                       </span>
@@ -214,13 +214,13 @@ export default function TutorBookingsPage() {
                           setSelectedBooking(booking);
                           setShowModal(true);
                         }}
-                        className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700"
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition"
                       >
                         Cancel
                       </button>
                       <button
                         onClick={() => updateBookingStatus(booking.id, 'COMPLETED')}
-                        className="px-4 py-2 bg-teal-600 text-white rounded-lg text-sm hover:bg-green-700"
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 transition"
                       >
                         Mark Complete
                       </button>
@@ -230,9 +230,9 @@ export default function TutorBookingsPage() {
                     <div className="text-center">
                       <div className="flex items-center gap-1 justify-center">
                         <span className="text-yellow-500">⭐</span>
-                        <span className="font-medium">{booking.review.rating}/5</span>
+                        <span className="font-medium text-gray-900 dark:text-white">{booking.review.rating}/5</span>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">Student reviewed</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Student reviewed</p>
                     </div>
                   )}
                 </div>
@@ -245,15 +245,15 @@ export default function TutorBookingsPage() {
       {/* Cancel Modal */}
       {showModal && selectedBooking && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-bold text-gray-900">Cancel Booking</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Cancel Booking</h2>
             </div>
             <div className="p-6">
-              <p className="text-gray-600 mb-4">
-                Are you sure you want to cancel the session with <strong>{selectedBooking.student.name}</strong>?
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Are you sure you want to cancel the session with <strong className="text-gray-900 dark:text-white">{selectedBooking.student.name}</strong>?
               </p>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                 Date: {new Date(selectedBooking.date).toLocaleString()}
               </p>
               <div className="flex gap-3">
@@ -262,7 +262,7 @@ export default function TutorBookingsPage() {
                     setShowModal(false);
                     setSelectedBooking(null);
                   }}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"
                 >
                   No, Keep
                 </button>
@@ -270,7 +270,7 @@ export default function TutorBookingsPage() {
                   onClick={() => {
                     updateBookingStatus(selectedBooking.id, 'CANCELLED');
                   }}
-                  className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                  className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
                 >
                   Yes, Cancel
                 </button>

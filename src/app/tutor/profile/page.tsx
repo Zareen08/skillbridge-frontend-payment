@@ -33,7 +33,7 @@ export default function TutorProfilePage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/auth/login');
       return;
     }
     
@@ -101,7 +101,7 @@ export default function TutorProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
@@ -110,14 +110,14 @@ export default function TutorProfilePage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Tutor Profile</h1>
-        <p className="text-gray-600 mt-1">Update your professional information</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Tutor Profile</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">Update your professional information</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 space-y-6">
         {/* Title */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Professional Title *
           </label>
           <input
@@ -125,14 +125,14 @@ export default function TutorProfilePage() {
             required
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             placeholder="e.g., Senior Full Stack Developer & Instructor"
           />
         </div>
 
         {/* Bio */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Bio *
           </label>
           <textarea
@@ -140,14 +140,14 @@ export default function TutorProfilePage() {
             rows={6}
             value={formData.bio}
             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             placeholder="Tell students about your teaching experience and approach..."
           />
         </div>
 
         {/* Subjects */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Subjects You Teach
           </label>
           <div className="flex gap-2 mb-3">
@@ -155,14 +155,14 @@ export default function TutorProfilePage() {
               type="text"
               value={newSubject}
               onChange={(e) => setNewSubject(e.target.value)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="e.g., JavaScript, React, Python"
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSubject())}
             />
             <button
               type="button"
               onClick={addSubject}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
             >
               Add
             </button>
@@ -171,13 +171,13 @@ export default function TutorProfilePage() {
             {formData.subjects.map((subject) => (
               <span
                 key={subject}
-                className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm flex items-center gap-2"
+                className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-400 rounded-full text-sm flex items-center gap-2"
               >
                 {subject}
                 <button
                   type="button"
                   onClick={() => removeSubject(subject)}
-                  className="text-indigo-500 hover:text-indigo-700"
+                  className="text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
                 >
                   ×
                 </button>
@@ -189,7 +189,7 @@ export default function TutorProfilePage() {
         {/* Hourly Rate & Experience */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Hourly Rate ($) *
             </label>
             <input
@@ -199,12 +199,12 @@ export default function TutorProfilePage() {
               step="5"
               value={formData.hourlyRate}
               onChange={(e) => setFormData({ ...formData, hourlyRate: parseInt(e.target.value) || 0 })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Years of Experience *
             </label>
             <input
@@ -213,14 +213,14 @@ export default function TutorProfilePage() {
               min="0"
               value={formData.experience}
               onChange={(e) => setFormData({ ...formData, experience: parseInt(e.target.value) || 0 })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
           </div>
         </div>
 
         {/* Education */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Education *
           </label>
           <input
@@ -228,24 +228,24 @@ export default function TutorProfilePage() {
             required
             value={formData.education}
             onChange={(e) => setFormData({ ...formData, education: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             placeholder="e.g., M.Sc. in Computer Science, Stanford University"
           />
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-end gap-4 pt-4 border-t">
+        <div className="flex justify-end gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition"
           >
             {saving ? 'Saving...' : 'Save Profile'}
           </button>

@@ -22,7 +22,7 @@ export default function TutorAvailabilityPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/auth/login');
       return;
     }
     
@@ -52,7 +52,7 @@ export default function TutorAvailabilityPage() {
     const currentSlots = availability[day] || [];
     setAvailability({
       ...availability,
-      [day]: [...currentSlots, '09:00-10:00']
+      [day]: [...currentSlots, '09:00-12:00']
     });
   };
 
@@ -90,7 +90,7 @@ export default function TutorAvailabilityPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
@@ -99,20 +99,20 @@ export default function TutorAvailabilityPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Set Your Availability</h1>
-        <p className="text-gray-600 mt-1">Define when you're available for tutoring sessions</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Set Your Availability</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">Define when you're available for tutoring sessions</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6">
+      <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
         <div className="space-y-6">
           {days.map((day) => (
-            <div key={day} className="border-b pb-6 last:border-b-0">
+            <div key={day} className="border-b border-gray-200 dark:border-gray-700 pb-6 last:border-b-0">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">{day}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{day}</h3>
                 <button
                   type="button"
                   onClick={() => addTimeSlot(day)}
-                  className="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
+                  className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm font-medium transition"
                 >
                   + Add Time Slot
                 </button>
@@ -125,38 +125,38 @@ export default function TutorAvailabilityPage() {
                       type="text"
                       value={slot}
                       onChange={(e) => updateTimeSlot(day, index, e.target.value)}
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                       placeholder="e.g., 09:00-12:00"
                     />
                     <button
                       type="button"
                       onClick={() => removeTimeSlot(day, index)}
-                      className="text-red-600 hover:text-red-800 px-3"
+                      className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 px-3 transition"
                     >
                       Remove
                     </button>
                   </div>
                 ))}
                 {(!availability[day] || availability[day].length === 0) && (
-                  <p className="text-gray-400 text-sm">No time slots added</p>
+                  <p className="text-gray-400 dark:text-gray-500 text-sm">No time slots added</p>
                 )}
               </div>
             </div>
           ))}
         </div>
 
-        <div className="flex justify-end gap-4 pt-6 mt-6 border-t">
+        <div className="flex justify-end gap-4 pt-6 mt-6 border-t border-gray-200 dark:border-gray-700">
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition"
           >
             {saving ? 'Saving...' : 'Save Availability'}
           </button>
