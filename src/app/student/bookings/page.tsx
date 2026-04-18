@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import api from '../../../lib/axios';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { CalendarIcon, ClockIcon, CheckCircleIcon, XCircleIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, ClockIcon, CheckCircleIcon, XCircleIcon, EyeIcon, CreditCardIcon } from '@heroicons/react/24/outline';
 
 interface Booking {
   id: string;
@@ -14,6 +14,7 @@ interface Booking {
   duration: number;
   totalAmount: number;
   status: string;
+  paymentStatus?: string;
   isReviewed?: boolean;
   review?: {
     id: string;
@@ -83,11 +84,14 @@ export default function StudentBookingsPage() {
 
   const getFilteredBookings = () => {
     if (filter === 'ALL') return bookings;
+    if (filter === 'PENDING_PAYMENT') return bookings.filter(b => b.status === 'PENDING_PAYMENT');
     return bookings.filter(b => b.status === filter);
   };
 
   const getStatusBadge = (status: string) => {
     switch(status) {
+      case 'PENDING_PAYMENT':
+        return 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-400';
       case 'CONFIRMED':
         return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400';
       case 'COMPLETED':
@@ -110,10 +114,13 @@ export default function StudentBookingsPage() {
   const filteredBookings = getFilteredBookings();
   const stats = {
     total: bookings.length,
+    pending: bookings.filter(b => b.status === 'PENDING_PAYMENT').length,
     confirmed: bookings.filter(b => b.status === 'CONFIRMED').length,
     completed: bookings.filter(b => b.status === 'COMPLETED').length,
     cancelled: bookings.filter(b => b.status === 'CANCELLED').length,
   };
+
+  const filterTabs = ['ALL', 'PENDING_PAYMENT', 'CONFIRMED', 'COMPLETED', 'CANCELLED'];
 
   return (
     <div>
@@ -126,10 +133,14 @@ export default function StudentBookingsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-6">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 text-center">
           <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Total Bookings</p>
+        </div>
+        <div className="bg-orange-50 dark:bg-orange-900/30 rounded-lg shadow p-4 text-center">
+          <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{stats.pending}</p>
+          <p className="text-sm text-orange-600 dark:text-orange-400">Pending Payment</p>
         </div>
         <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-lg shadow p-4 text-center">
           <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.confirmed}</p>
@@ -148,18 +159,18 @@ export default function StudentBookingsPage() {
       {/* Filter Tabs */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6">
         <div className="border-b border-gray-200 dark:border-gray-700">
-          <nav className="flex space-x-8 px-6">
-            {['ALL', 'CONFIRMED', 'COMPLETED', 'CANCELLED'].map((tab) => (
+          <nav className="flex space-x-8 px-6 overflow-x-auto">
+            {filterTabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setFilter(tab)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition ${
+                className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition ${
                   filter === tab
                     ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
               >
-                {tab === 'ALL' ? 'All' : tab.charAt(0) + tab.slice(1).toLowerCase()}
+                {tab === 'ALL' ? 'All' : tab === 'PENDING_PAYMENT' ? 'Pending Payment' : tab.charAt(0) + tab.slice(1).toLowerCase()}
               </button>
             ))}
           </nav>
@@ -211,13 +222,25 @@ export default function StudentBookingsPage() {
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Status</p>
                       <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${getStatusBadge(booking.status)}`}>
-                        {booking.status}
+                        {booking.status === 'PENDING_PAYMENT' ? 'Pending Payment' : booking.status}
                       </span>
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex flex-col gap-2 ml-4">
+                  {/* Pay Now Button - Show for pending payment bookings */}
+                  {booking.status === 'PENDING_PAYMENT' && (
+                    <Link
+                      href={`/payment?bookingId=${booking.id}`}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 flex items-center gap-2 justify-center"
+                    >
+                      <CreditCardIcon className="h-4 w-4" />
+                      Pay Now
+                    </Link>
+                  )}
+                  
+                  {/* Cancel Button - Only for confirmed upcoming bookings */}
                   {booking.status === 'CONFIRMED' && new Date(booking.date) > new Date() && (
                     <button
                       onClick={() => {
@@ -229,6 +252,8 @@ export default function StudentBookingsPage() {
                       Cancel
                     </button>
                   )}
+                  
+                  {/* Leave Review Button */}
                   {booking.status === 'COMPLETED' && !booking.isReviewed && !booking.review && (
                     <Link
                       href={`/student/review/${booking.id}`}
@@ -237,6 +262,8 @@ export default function StudentBookingsPage() {
                       Leave Review
                     </Link>
                   )}
+                  
+                  {/* Review Display */}
                   {booking.status === 'COMPLETED' && booking.review && (
                     <div className="text-center">
                       <div className="flex items-center gap-1 justify-center">
@@ -246,6 +273,8 @@ export default function StudentBookingsPage() {
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">You reviewed this session</p>
                     </div>
                   )}
+                  
+                  {/* View Details Link */}
                   <Link
                     href={`/student/booking/${booking.id}`}
                     className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm text-center"

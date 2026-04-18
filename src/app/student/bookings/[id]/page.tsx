@@ -32,9 +32,6 @@ interface Booking {
     name: string;
     email: string;
     avatar: string | null;
-    studentProfile?: {
-      education: string;
-    };
   };
   tutor: {
     id: string;
@@ -120,6 +117,12 @@ export default function BookingDetailsPage() {
     if (!booking) return null;
     
     switch(booking.status) {
+      case 'PENDING_PAYMENT':
+        return {
+          color: 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-400',
+          icon: CurrencyDollarIcon,
+          text: 'Payment Required'
+        };
       case 'CONFIRMED':
         return {
           color: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400',
@@ -159,7 +162,7 @@ export default function BookingDetailsPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8 text-center">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Booking not found</h1>
-        <Link href="/student/bookings" className="mt-4 inline-block text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">
+        <Link href="/student/bookings" className="mt-4 inline-block text-indigo-600 dark:text-indigo-400">
           ← Back to Bookings
         </Link>
       </div>
@@ -170,7 +173,7 @@ export default function BookingDetailsPage() {
   const StatusIcon = statusBadge?.icon;
   const isUpcoming = booking.status === 'CONFIRMED' && new Date(booking.date) > new Date();
   const canCancel = isUpcoming;
-  const needsPayment = booking.status === 'CONFIRMED' && booking.paymentStatus !== 'paid';
+  const needsPayment = booking.status === 'PENDING_PAYMENT';
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -192,7 +195,7 @@ export default function BookingDetailsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content - Left Side */}
+        {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Session Info */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
@@ -234,15 +237,6 @@ export default function BookingDetailsPage() {
               <div className="flex-1">
                 <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{booking.tutor.name}</h3>
                 <p className="text-gray-600 dark:text-gray-400">{booking.tutor.tutorProfile?.title}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <div className="flex items-center gap-1">
-                    <StarIcon className="h-4 w-4 text-yellow-400" />
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">{booking.tutor.tutorProfile?.rating?.toFixed(1) || 'New'}</span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">({booking.tutor.tutorProfile?.totalReviews || 0} reviews)</span>
-                  </div>
-                  <span className="text-gray-300 dark:text-gray-600">|</span>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{booking.tutor.tutorProfile?.experience}+ years exp</span>
-                </div>
                 <Link
                   href={`/tutors/${booking.tutor.id}`}
                   className="mt-3 inline-block text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm"
@@ -252,47 +246,14 @@ export default function BookingDetailsPage() {
               </div>
             </div>
           </div>
-
-          {/* Review Section */}
-          {booking.status === 'COMPLETED' && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Your Review</h2>
-              {booking.review ? (
-                <div>
-                  <div className="flex items-center gap-1 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <StarIcon
-                        key={i}
-                        className={`h-5 w-5 ${i < booking.review!.rating ? 'text-yellow-400' : 'text-gray-200 dark:text-gray-600'}`}
-                      />
-                    ))}
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-300">{booking.review.comment}</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                    Reviewed on {new Date(booking.review.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-              ) : (
-                <div className="text-center py-4">
-                  <p className="text-gray-500 dark:text-gray-400 mb-3">You haven't reviewed this session yet</p>
-                  <Link
-                    href={`/student/review/${booking.id}`}
-                    className="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
-                  >
-                    Leave a Review
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
         </div>
 
-        {/* Sidebar - Right Side */}
+        {/* Sidebar */}
         <div className="lg:col-span-1 space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Actions</h2>
             <div className="space-y-3">
-              {/* Payment Button - Show for confirmed bookings that need payment */}
+              {/* Payment Button - Show for pending payment bookings */}
               {needsPayment && (
                 <Link
                   href={`/payment?bookingId=${booking.id}`}
@@ -332,11 +293,11 @@ export default function BookingDetailsPage() {
             </div>
           </div>
 
-          {/* Payment Status Card (if pending) */}
+          {/* Payment Required Card */}
           {needsPayment && (
-            <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-              <h3 className="font-semibold text-yellow-800 dark:text-yellow-400 mb-2">Payment Required</h3>
-              <p className="text-sm text-yellow-700 dark:text-yellow-300">
+            <div className="bg-orange-50 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+              <h3 className="font-semibold text-orange-800 dark:text-orange-400 mb-2">Payment Required</h3>
+              <p className="text-sm text-orange-700 dark:text-orange-300">
                 Complete your payment to confirm this booking. Your session is reserved but not confirmed until payment is received.
               </p>
             </div>
@@ -346,12 +307,13 @@ export default function BookingDetailsPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Booking Timeline</h2>
             <div className="space-y-4">
+              {/* Booking Created */}
               <div className="flex gap-3">
                 <div className="relative">
                   <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                     <CheckCircleIcon className="h-4 w-4 text-green-600 dark:text-green-400" />
                   </div>
-                  {booking.status !== 'CANCELLED' && (
+                  {(booking.status !== 'CANCELLED' && booking.status !== 'PENDING_PAYMENT') && (
                     <div className="absolute top-8 left-4 h-full w-px bg-gray-200 dark:bg-gray-700"></div>
                   )}
                 </div>
@@ -364,20 +326,33 @@ export default function BookingDetailsPage() {
               </div>
 
               {/* Payment Step */}
-              {booking.paymentStatus === 'paid' && (
+              {(booking.status === 'PENDING_PAYMENT' || booking.paymentStatus === 'paid') && (
                 <div className="flex gap-3">
-                  <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                    <CurrencyDollarIcon className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  <div className={`h-8 w-8 rounded-full ${
+                    booking.paymentStatus === 'paid' 
+                      ? 'bg-green-100 dark:bg-green-900/30' 
+                      : 'bg-orange-100 dark:bg-orange-900/30'
+                  } flex items-center justify-center`}>
+                    <CurrencyDollarIcon className={`h-4 w-4 ${
+                      booking.paymentStatus === 'paid' 
+                        ? 'text-green-600 dark:text-green-400' 
+                        : 'text-orange-600 dark:text-orange-400'
+                    }`} />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Payment Completed</p>
+                    <p className="font-medium text-gray-900 dark:text-white">
+                      {booking.paymentStatus === 'paid' ? 'Payment Completed' : 'Payment Required'}
+                    </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Payment received: ${booking.totalAmount}
+                      {booking.paymentStatus === 'paid' 
+                        ? `Payment received: $${booking.totalAmount}`
+                        : 'Complete payment to confirm your booking'}
                     </p>
                   </div>
                 </div>
               )}
 
+              {/* Session Scheduled */}
               {booking.status === 'CONFIRMED' && (
                 <div className="flex gap-3">
                   <div className="h-8 w-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
@@ -392,6 +367,7 @@ export default function BookingDetailsPage() {
                 </div>
               )}
 
+              {/* Session Completed */}
               {booking.status === 'COMPLETED' && (
                 <div className="flex gap-3">
                   <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
@@ -406,6 +382,7 @@ export default function BookingDetailsPage() {
                 </div>
               )}
 
+              {/* Booking Cancelled */}
               {booking.status === 'CANCELLED' && (
                 <div className="flex gap-3">
                   <div className="h-8 w-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
