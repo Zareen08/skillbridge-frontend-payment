@@ -276,7 +276,7 @@ export default function StudentBookingsPage() {
                   
                   {/* View Details Link */}
                   <Link
-                    href={`/student/booking/${booking.id}`}
+                    href={`/student/bookings/${booking.id}`}
                     className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm text-center"
                   >
                     View Details
