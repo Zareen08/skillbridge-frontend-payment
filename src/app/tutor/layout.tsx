@@ -58,7 +58,6 @@ export default function TutorLayout({ children }: { children: ReactNode }) {
     { name: 'Profile', href: '/tutor/profile', icon: UserIcon },
     { name: 'Availability', href: '/tutor/availability', icon: ClockIcon },
     { name: 'Bookings', href: '/tutor/bookings', icon: CalendarIcon },
-    { name: 'Analytics', href: '/tutor/analytics', icon: ChartBarIcon },
   ];
 
   return (
