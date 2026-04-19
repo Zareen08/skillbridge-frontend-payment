@@ -40,7 +40,7 @@ function PaymentContent() {
 
   const fetchPaymentIntent = async () => {
     try {
-      const response = await api.post('/payment/create-payment-intent', { bookingId });
+      const response = await api.post('/payments/create-payment-intent', { bookingId });
       setClientSecret(response.data.data.clientSecret);
     } catch (error: any) {
       console.error('Error creating payment intent:', error);
