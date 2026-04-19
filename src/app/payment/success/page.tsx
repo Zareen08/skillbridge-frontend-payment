@@ -41,7 +41,7 @@ function SuccessContent() {
           <div className="space-y-3">
             {bookingId && (
               <Link
-                href={`/student/booking/${bookingId}`}
+                href={`/student/bookings/${bookingId}`}
                 className="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center px-4 py-3 rounded-lg font-medium transition duration-200"
               >
                 View My Booking
