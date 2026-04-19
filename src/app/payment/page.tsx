@@ -61,7 +61,7 @@ function PaymentContent() {
   };
 
   const handleSuccess = () => {
-    router.push(`/payments/success?bookingId=${bookingId}`);
+    router.push(`/payment/success?bookingId=${bookingId}`);
   };
 
   const handleCancel = () => {
