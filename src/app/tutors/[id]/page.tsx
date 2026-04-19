@@ -11,7 +11,8 @@ import {
   CalendarIcon, 
   ClockIcon, 
   AcademicCapIcon, 
-  BriefcaseIcon 
+  BriefcaseIcon,
+  CreditCardIcon
 } from '@heroicons/react/24/outline';
 
 interface Tutor {
@@ -89,15 +90,23 @@ export default function TutorDetailsPage() {
 
     setSubmitting(true);
     try {
-      await api.post('/bookings', {
+      // Create booking (status will be PENDING_PAYMENT)
+      const response = await api.post('/bookings', {
         tutorId: tutor?.user.id,
         date: new Date(bookingDate).toISOString(),
         duration: bookingDuration,
         notes: bookingNotes,
       });
-      toast.success('Booking created successfully!');
+
+      const booking = response.data.data;
+      
+      // Close modal and redirect to payment page
       setShowBookingModal(false);
-      router.push('/student/bookings');
+      toast.success('Booking created! Please complete payment.');
+      
+      // Redirect to payment page with booking ID
+      router.push(`/payment?bookingId=${booking.id}`);
+      
     } catch (error: any) {
       console.error('Error creating booking:', error);
       toast.error(error.response?.data?.message || 'Failed to create booking');
@@ -257,8 +266,9 @@ export default function TutorDetailsPage() {
               <>
                 <button
                   onClick={() => setShowBookingModal(true)}
-                  className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
+                  className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition flex items-center justify-center gap-2"
                 >
+                  <CreditCardIcon className="h-5 w-5" />
                   Book a Session
                 </button>
 
@@ -278,13 +288,14 @@ export default function TutorDetailsPage() {
         </div>
       </div>
 
-      {/* Booking Modal */}
+      {/* Booking Modal - Updated to show payment flow */}
       {showBookingModal && user && user.role === 'STUDENT' && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">Book a Session</h2>
               <p className="text-gray-600 dark:text-gray-400">with {tutor.user.name}</p>
+              <p className="text-sm text-orange-600 dark:text-orange-400 mt-1">Payment required after booking</p>
             </div>
             <form onSubmit={handleBooking} className="p-6 space-y-4">
               <div>
@@ -321,6 +332,10 @@ export default function TutorDetailsPage() {
                   placeholder="Any specific topics or requirements?"
                 />
               </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                <p>💳 You'll be redirected to payment after booking</p>
+                <p>🔒 Secure payment via Stripe</p>
+              </div>
               <div className="flex gap-3 pt-4">
                 <button
                   type="button"
@@ -332,9 +347,16 @@ export default function TutorDetailsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition"
+                  className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition flex items-center justify-center gap-2"
                 >
-                  {submitting ? 'Booking...' : `Book - $${(tutor.hourlyRate * (bookingDuration / 60)).toFixed(2)}`}
+                  {submitting ? (
+                    'Processing...'
+                  ) : (
+                    <>
+                      <CreditCardIcon className="h-4 w-4" />
+                      Continue to Payment
+                    </>
+                  )}
                 </button>
               </div>
             </form>
