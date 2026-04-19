@@ -58,7 +58,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     { name: 'Users', href: '/admin/users', icon: UsersIcon },
     { name: 'Bookings', href: '/admin/bookings', icon: CalendarIcon },
     { name: 'Categories', href: '/admin/categories', icon: TagIcon },
-    { name: 'Analytics', href: '/admin/analytics', icon: ChartBarIcon },
+    { name: 'Analytics', href: '/admin/platform/analytics', icon: ChartBarIcon },
   ];
 
   return (

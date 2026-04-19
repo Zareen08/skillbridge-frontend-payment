@@ -240,7 +240,7 @@ export default function AdminDashboard() {
             Manage Categories
           </Link>
           <Link
-            href="/admin/analytics"
+            href="/admin/platform/analytics"
             className="text-center bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 px-4 py-3 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/50 transition"
           >
             View Analytics
