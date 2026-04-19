@@ -22,9 +22,7 @@ interface DashboardStats {
     cancelled: number;
     pending: number;
     completionRate: string;
-  };
-  revenue: {
-    total: number;
+    totalRevenue: number;
   };
 }
 
@@ -33,6 +31,7 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -46,17 +45,70 @@ export default function AdminDashboard() {
     }
     
     if (user) {
-      fetchDashboardStats();
+      fetchDashboardData();
     }
   }, [user, authLoading]);
 
-  const fetchDashboardStats = async () => {
+  const fetchDashboardData = async () => {
     try {
-      const response = await api.get('/admin/dashboard/stats');
-      setStats(response.data.data);
+      setError(null);
+      setLoading(true);
+      
+      
+      // Fetch users data
+      const usersRes = await api.get('/admin/users?limit=100');
+      const allUsers = usersRes.data.data.users || [];
+      
+      // Calculate user stats
+      const totalUsers = allUsers.length;
+      const tutors = allUsers.filter((u: any) => u.role === 'TUTOR').length;
+      const students = allUsers.filter((u: any) => u.role === 'STUDENT').length;
+      const activeUsers = allUsers.filter((u: any) => u.isActive === true).length;
+      const bannedUsers = allUsers.filter((u: any) => u.isActive === false).length;
+      
+      // Fetch bookings data
+      const bookingsRes = await api.get('/admin/bookings?limit=100');
+      const allBookings = bookingsRes.data.data.bookings || [];
+      
+      // Calculate booking stats
+      const totalBookings = allBookings.length;
+      const completedBookings = allBookings.filter((b: any) => b.status === 'COMPLETED').length;
+      const cancelledBookings = allBookings.filter((b: any) => b.status === 'CANCELLED').length;
+      const pendingBookings = allBookings.filter((b: any) => b.status === 'CONFIRMED').length;
+      
+      // Calculate total revenue from completed bookings
+      const totalRevenue = allBookings
+        .filter((b: any) => b.status === 'COMPLETED')
+        .reduce((sum: number, b: any) => sum + (b.totalAmount || 0), 0);
+      
+      // Calculate completion rate
+      const completionRate = totalBookings > 0 
+        ? ((completedBookings / totalBookings) * 100).toFixed(2) 
+        : '0';
+      
+      setStats({
+        users: {
+          total: totalUsers,
+          tutors: tutors,
+          students: students,
+          active: activeUsers,
+          banned: bannedUsers,
+        },
+        bookings: {
+          total: totalBookings,
+          completed: completedBookings,
+          cancelled: cancelledBookings,
+          pending: pendingBookings,
+          completionRate: completionRate,
+          totalRevenue: totalRevenue,
+        },
+      });
+      
+      
     } catch (error: any) {
-      console.error('Error fetching stats:', error);
-      toast.error('Failed to load dashboard');
+      console.error('❌ Error fetching dashboard data:', error);
+      setError(error.response?.data?.message || 'Failed to load dashboard');
+      toast.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
     }
@@ -64,8 +116,24 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
+          <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
+          <button
+            onClick={fetchDashboardData}
+            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -83,7 +151,8 @@ export default function AdminDashboard() {
     { name: 'Completed', value: stats?.bookings?.completed || 0, icon: BookOpenIcon, color: 'bg-green-500', link: '/admin/bookings?status=COMPLETED' },
     { name: 'Cancelled', value: stats?.bookings?.cancelled || 0, icon: BookOpenIcon, color: 'bg-red-500', link: '/admin/bookings?status=CANCELLED' },
     { name: 'Pending', value: stats?.bookings?.pending || 0, icon: BookOpenIcon, color: 'bg-yellow-500', link: '/admin/bookings?status=CONFIRMED' },
-    { name: 'Completion Rate', value: `${stats?.bookings?.completionRate || 0}%`, icon: ChartBarIcon, color: 'bg-indigo-500', link: '/admin/analytics' },
+    { name: 'Total Revenue', value: `$${stats?.bookings?.totalRevenue?.toFixed(2) || 0}`, icon: CurrencyDollarIcon, color: 'bg-indigo-500', link: '/admin/bookings' },
+    { name: 'Completion Rate', value: `${stats?.bookings?.completionRate || 0}%`, icon: ChartBarIcon, color: 'bg-cyan-500', link: '/admin/bookings' },
   ];
 
   return (
@@ -100,7 +169,7 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-indigo-100 text-sm">Total Platform Revenue</p>
-              <p className="text-3xl font-bold mt-2">${stats?.revenue?.total?.toFixed(2) || 0}</p>
+              <p className="text-3xl font-bold mt-2">${stats?.bookings?.totalRevenue?.toFixed(2) || 0}</p>
               <p className="text-indigo-100 text-sm mt-2">Lifetime earnings</p>
             </div>
             <div className="bg-white/20 rounded-full p-4">
@@ -135,7 +204,7 @@ export default function AdminDashboard() {
       {/* Booking Statistics Section */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Booking Statistics</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {bookingStatCards.map((stat) => (
             <Link key={stat.name} href={stat.link}>
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 hover:shadow-lg transition cursor-pointer">
